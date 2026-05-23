@@ -24,16 +24,12 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-          proxy_timeout: 30s
-      
+    
           fingerprint: "" 
           script: |
-            echo "Current directory:"
-            pwd
-            echo "Checking user:"
-            whoami
-            echo "Setting safe directory..."
+            echo "Moving to directory..."
             cd /var/www/html
+            echo "Configuring git safe directory..."
             sudo git config --global --add safe.directory /var/www/html
-            echo "Attempting pull..."
+            echo "Pulling latest code..."
             sudo git pull origin main
