@@ -12,24 +12,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Run Build/Test
-        run: |
-          echo "Building the website..."
-          ls -la
-          echo "Build successful!"
-
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-    
-          fingerprint: "" 
+          # This line stops the connection from waiting for a human "yes"
+          fingerprint: ""
           script: |
-            echo "Moving to directory..."
+            echo "--- Starting Deployment ---"
             cd /var/www/html
-            echo "Configuring git safe directory..."
+            echo "Setting safe directory..."
             sudo git config --global --add safe.directory /var/www/html
-            echo "Pulling latest code..."
+            echo "Pulling latest code from GitHub..."
             sudo git pull origin main
+            echo "--- Deployment Successful ---"
