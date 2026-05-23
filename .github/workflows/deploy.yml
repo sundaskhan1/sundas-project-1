@@ -25,8 +25,5 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
-                 cd /var/www/html
-                sudo git pull origin main
-          
-            # Only use sudo if your project folder requires root permissions
-            # sudo systemctl restart nginx
+            cd /var/www/html
+            sudo git pull origin main
