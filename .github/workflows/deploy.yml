@@ -14,6 +14,8 @@ jobs:
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
@@ -22,5 +24,6 @@ jobs:
           script: |
             cd /var/www/html
             sudo git config --global --add safe.directory /var/www/html
-            sudo git remote set-url origin https://${{ secrets.GIT_TOKEN }}@github.com/sundaskhan1/sundas-project-1.git
+            # Uses the token provided in the env block above
+            sudo git remote set-url origin https://${GIT_TOKEN}@github.com/sundaskhan1/sundas-project-1.git
             sudo git pull origin main
