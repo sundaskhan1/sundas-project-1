@@ -12,9 +12,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # REPLACE YOUR OLD "DEPLOY TO EC2" BLOCK WITH THIS:
-      - name: Debug Connection
-        run: |
-          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > private_key.pem
-          chmod 600 private_key.pem
-          ssh -o StrictHostKeyChecking=no -i private_key.pem -v ubuntu@${{ secrets.EC2_HOST }} "echo 'Connection successful!'"
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          fingerprint: ""
+          script: |
+            cd /var/www/html
+            sudo git config --global --add safe.directory /var/www/html
+            sudo git pull origin main
