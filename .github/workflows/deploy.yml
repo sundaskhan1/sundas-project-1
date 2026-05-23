@@ -16,15 +16,14 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
+         - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-          # This line stops the connection from waiting for a human "yes"
           fingerprint: ""
           script: |
-            echo "--- Starting Deployment ---"
             cd /var/www/html
-            echo "Setting safe directory..."
             sudo git config --global --add safe.directory /var/www/html
-            echo "Pulling latest code from GitHub..."
             sudo git pull origin main
-            echo "--- Deployment Successful ---"
