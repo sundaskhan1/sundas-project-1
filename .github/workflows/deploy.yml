@@ -25,7 +25,8 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
-            cd /home/ubuntu/sundas-project-1
-            git pull origin main
+                 cd /var/www/html
+                sudo git pull origin main
+          
             # Only use sudo if your project folder requires root permissions
             # sudo systemctl restart nginx
