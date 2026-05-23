@@ -6,12 +6,13 @@ on:
       - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
+<<<<<<< HEAD
       - name: Run Build/Test
         run: |
           echo "Building the website..."
@@ -19,3 +20,25 @@ jobs:
           ls -la
           echo "Build successful!" 
           
+=======
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          # This line tells the SSH action to trust the server automatically
+          fingerprint: "" 
+          script: |
+            # Add GitHub to known hosts so it doesn't hang
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+            
+            cd /var/www/html
+            export GIT_TERMINAL_PROMPT=0
+            sudo git config --global --add safe.directory /var/www/html
+            sudo git remote set-url origin https://${GIT_TOKEN}@github.com/sundaskhan1/sundas-project-1.git
+            sudo git fetch origin
+            sudo git reset --hard origin/main
+>>>>>>> 5841175c03f698fc6d4118967293abbeb6658649
