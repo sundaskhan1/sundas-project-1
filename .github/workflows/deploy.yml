@@ -1,0 +1,20 @@
+name: Deploy Website
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run Build/Test
+        run: |
+          echo "Building the website..."
+          # You can add commands here like minifying CSS or running tests
+          ls -la
+          echo "Build successful!"
